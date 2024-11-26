@@ -7,11 +7,14 @@ from io import BytesIO
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Necessário para usar flash
 
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')  # Usando variável de ambiente
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')  # Usando variável de ambiente
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')  # Usando variável de ambiente
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')  # Usando variável de ambiente
-app.config['MYSQL_PORT'] = os.getenv('MYSQL_PORT')  # Usando variável de ambiente
+# Configuração do banco de dados
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'up-de-fra1-mysql-1.db.run-on-seenode.com')  # Nome da variável de ambiente ou 'localhost' como padrão
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'db_0x42k76tgmx8')  # Nome da variável de ambiente ou o usuário padrão
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '8ax18qtDiYHLcQbOdXTftAIo')  # Nome da variável de ambiente ou a senha padrão
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'db_0x42k76tgmx8')  # Nome da variável de ambiente ou o nome do banco
+app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 11550))  # Porta fornecida pelo Seenode (11550)
+
+
 
 mysql = MySQL(app)
 
