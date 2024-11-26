@@ -7,11 +7,11 @@ from io import BytesIO
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Necessário para usar flash
 
-# Configuração do banco de dados
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'MapeamentoCultural'
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')  # Usando variável de ambiente
+app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')  # Usando variável de ambiente
+app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')  # Usando variável de ambiente
+app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')  # Usando variável de ambiente
+app.config['MYSQL_PORT'] = os.getenv('MYSQL_PORT')  # Usando variável de ambiente
 
 mysql = MySQL(app)
 
