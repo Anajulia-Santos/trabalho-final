@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Cultural Completo</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Exibindo a mensagem de sucesso -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="alert alert-success">
+                {{ messages[0][1] }}
+            </div>
+        {% endif %}
+        {% endwith %}
+
+        <h1>Relatório Cultural Completo</h1>
+        
+        <!-- Botão para baixar o relatório em Excel -->
+        <a href="/relatorios/download" class="button-download">Baixar Relatório em Excel</a>
+
+
+        <!-- Tabela para exibir os dados -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Município</th>
+                    <th>Manifestação</th>
+                    <th>Artista</th>
+                    <th>Gênero</th>
+                    <th>Local de Apresentação</th>
+                    <th>Sobre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Iterando sobre os dados passados para o template -->
+                {% for row in dados %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td>{{ row[3] }}</td>
+                    <td>{{ row[4] }}</td>
+                    <td>{{ row[5] }}</td>
+                    <td>{{ row[6] }}</td>
+                    <td>{{ row[7] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

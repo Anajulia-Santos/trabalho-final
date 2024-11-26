@@ -1,0 +1,139 @@
+/* Estilo geral da página */
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f7f3e9; /* Cor suave de fundo, com um tom claro de creme */
+    color: #4d4d4d; /* Texto em tom escuro para boa legibilidade */
+    margin: 0;
+    padding: 0;
+    background-image: url('/static/background-texture.jpg'); /* Uma textura sutil como fundo */
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+/* Títulos e cabeçalhos */
+h1 {
+    text-align: center;
+    color: #ff6600; /* Cor vibrante para o título */
+    font-family: 'Pacifico', cursive;
+    font-size: 3rem;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2); /* Sombra para destacar o texto */
+    margin-top: 50px;
+}
+
+/* Caixa de formulário */
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff8e7; /* Cor clara e quente para dar a sensação de acolhimento */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid #ffcc00; /* Cor dourada para dar um toque cultural */
+}
+
+/* Labels e inputs */
+label {
+    font-weight: bold;
+    color: #ff6600;
+    font-size: 1.1rem;
+    margin-top: 15px;
+    display: block;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 2px solid #ffcc00;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #4d4d4d;
+    box-sizing: border-box; /* Para incluir padding no cálculo da largura */
+}
+
+textarea {
+    height: 100px;
+}
+
+/* Estilo para o botão de envio */
+button {
+    background-color: #ff6600; /* Laranja vibrante */
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e65c00; /* Tom de laranja mais escuro */
+}
+
+/* Estilo para as perguntas dinâmicas */
+.pergunta {
+    display: none; /* Inicialmente escondido */
+    margin-top: 20px;
+    padding: 15px;
+    background-color: rgba(255, 204, 0, 0.1);
+    border-radius: 8px;
+    border: 2px solid #ff6600;
+}
+
+/* Inputs e textareas para perguntas dinâmicas */
+.pergunta input, .pergunta textarea {
+    border: 2px solid #ff6600;
+    background-color: #fff;
+}
+
+.pergunta label {
+    color: #e65c00; /* Cor mais forte para destacar as perguntas */
+}
+
+/* Estilo para o footer */
+footer {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 1rem;
+    color: #4d4d4d;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Ajustes de responsividade */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    button {
+        font-size: 1rem;
+    }
+
+    label {
+        font-size: 1rem;
+    }
+}
+.button-download {
+    display: inline-block;
+    padding: 15px 25px;
+    background-color: #ff6600;
+    color: white;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 8px;
+    margin-top: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-download:hover {
+    background-color: #e65c00;
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeamento Cultural</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        function mostrarPerguntas() {
+            var manifestacao = document.getElementById("manifestacao").value;
+            var perguntas = document.getElementsByClassName("pergunta");
+            
+            // Ocultar todas as perguntas
+            for (var i = 0; i < perguntas.length; i++) {
+                perguntas[i].style.display = "none";
+            }
+            
+            // Mostrar perguntas específicas para a manifestação selecionada
+            if (manifestacao === "Musica") {
+                document.getElementById("perguntaMusica").style.display = "block";
+            } else if (manifestacao === "Danca") {
+                document.getElementById("perguntaDanca").style.display = "block";
+            } else if (manifestacao === "Artesanato") {
+                document.getElementById("perguntaArtesanato").style.display = "block";
+            } else if (manifestacao === "Gastronomia") {
+                document.getElementById("perguntaGastronomia").style.display = "block";
+            } else if (manifestacao === "Literatura") {
+                document.getElementById("perguntaLiteratura").style.display = "block";
+            } else if (manifestacao === "Religiosidade") {
+                document.getElementById("perguntaReligiosidade").style.display = "block";
+            } else if (manifestacao === "Patrimonio") {
+                document.getElementById("perguntaPatrimonio").style.display = "block";
+            } else if (manifestacao === "Eventos") {
+                document.getElementById("perguntaEventos").style.display = "block";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+            <!-- Exibindo a mensagem de sucesso -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {{ messages[0][1] }}
+                </div>
+            {% endif %}
+            {% endwith %}
+        <h1>Mapeamento Cultural</h1>
+        <form action="/submit-data" method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="municipio">Município:</label>
+            <input type="text" id="municipio" name="municipio" required>
+
+            <label for="manifestacao">Manifestação Cultural:</label>
+            <select id="manifestacao" name="manifestacao" onchange="mostrarPerguntas()" required>
+                <option value="">Selecione</option>
+                <option value="Musica">Música</option>
+                <option value="Danca">Dança</option>
+                <option value="Artesanato">Artesanato</option>
+                <option value="Gastronomia">Gastronomia</option>
+                <option value="Literatura">Literatura</option>
+                <option value="Religiosidade">Religiosidade</option>
+                <option value="Patrimonio">Patrimônio</option>
+                <option value="Eventos">Eventos Culturais</option>
+            </select>
+
+            <!-- Perguntas Dinâmicas -->
+            <div id="perguntaMusica" class="pergunta" style="display: none;">
+                <label for="nome_artista">Nome do Artista:</label>
+                <input type="text" id="nome_artista" name="nome_artista">
+
+                <label for="genero">Gênero Musical:</label>
+                <input type="text" id="genero" name="genero">
+
+                <label for="local_apresentacao">Local de Apresentação:</label>
+                <input type="text" id="local_apresentacao" name="local_apresentacao">
+
+                <label for="sobre">Sobre a Música:</label>
+                <textarea id="sobre" name="sobre"></textarea>
+            </div>
+
+            <div id="perguntaDanca" class="pergunta" style="display: none;">
+                <label for="estilo">Estilo de Dança:</label>
+                <input type="text" id="estilo" name="estilo">
+
+                <label for="grupo_danca">Grupo de Dança:</label>
+                <input type="text" id="grupo_danca" name="grupo_danca">
+
+                <label for="local_apresentacao_danca">Local de Apresentação:</label>
+                <input type="text" id="local_apresentacao_danca" name="local_apresentacao_danca">
+
+                <label for="sobre">Sobre a Dança:</label>
+                <textarea id="sobre" name="sobre"></textarea>
+            </div>
+
+            <div id="perguntaArtesanato" class="pergunta" style="display: none;">
+                <label for="tipo_material">Tipo de Material:</label>
+                <input type="text" id="tipo_material" name="tipo_material">
+
+                <label for="tecnica">Técnica Utilizada:</label>
+                <input type="text" id="tecnica" name="tecnica">
+
+                <label for="origem_historica">Origem Histórica:</label>
+                <textarea id="origem_historica" name="origem_historica"></textarea>
+            </div>
+
+            <div id="perguntaGastronomia" class="pergunta" style="display: none;">
+                <label for="prato_tipico">Prato Típico:</label>
+                <input type="text" id="prato_tipico" name="prato_tipico">
+
+                <label for="ingredientes">Ingredientes:</label>
+                <textarea id="ingredientes" name="ingredientes"></textarea>
+
+                <label for="historia_prato">História do Prato:</label>
+                <textarea id="historia_prato" name="historia_prato"></textarea>
+            </div>
+
+            <div id="perguntaLiteratura" class="pergunta" style="display: none;">
+                <label for="autor">Autor:</label>
+                <input type="text" id="autor" name="autor">
+
+                <label for="obra">Nome da Obra:</label>
+                <input type="text" id="obra" name="obra">
+
+                <label for="tipo_oralidade">Tipo de Oralidade:</label>
+                <input type="text" id="tipo_oralidade" name="tipo_oralidade">
+
+                <label for="sinopse">Sinopse:</label>
+                <textarea id="sinopse" name="sinopse"></textarea>
+            </div>
+
+            <div id="perguntaReligiosidade" class="pergunta" style="display: none;">
+                <label for="rito">Rito Religioso:</label>
+                <input type="text" id="rito" name="rito">
+
+                <label for="data_celebracao">Data de Celebração:</label>
+                <input type="date" id="data_celebracao" name="data_celebracao">
+
+                <label for="local_celebracao">Local de Celebração:</label>
+                <input type="text" id="local_celebracao" name="local_celebracao">
+
+                <label for="sobre">Sobre o Rito:</label>
+                <textarea id="sobre" name="sobre"></textarea>
+            </div>
+
+            <div id="perguntaPatrimonio" class="pergunta" style="display: none;">
+                <label for="nome_patrimonio">Nome do Patrimônio:</label>
+                <input type="text" id="nome_patrimonio" name="nome_patrimonio">
+
+                <label for="localizacao_patrimonio">Localização:</label>
+                <input type="text" id="localizacao_patrimonio" name="localizacao_patrimonio">
+
+                <label for="data_criacao">Data de Criação:</label>
+                <input type="date" id="data_criacao" name="data_criacao">
+
+                <label for="importancia_cultural">Importância Cultural:</label>
+                <textarea id="importancia_cultural" name="importancia_cultural"></textarea>
+            </div>
+
+            <div id="perguntaEventos" class="pergunta" style="display: none;">
+                <label for="nome_evento">Nome do Evento:</label>
+                <input type="text" id="nome_evento" name="nome_evento">
+
+                <label for="data_inicio_evento">Data de Início:</label>
+                <input type="date" id="data_inicio_evento" name="data_inicio_evento">
+
+                <label for="data_fim_evento">Data de Fim:</label>
+                <input type="date" id="data_fim_evento" name="data_fim_evento">
+
+                <label for="local_evento">Local do Evento:</label>
+                <input type="text" id="local_evento" name="local_evento">
+            </div>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
