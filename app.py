@@ -209,4 +209,5 @@ def download_relatorio():
     return send_file(output, as_attachment=True, download_name="relatorio_cultural.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)  # Garanta que escute em 0.0.0.0 e na porta 80
+
