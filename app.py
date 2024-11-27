@@ -1,6 +1,6 @@
 import os
 from flask import Flask, render_template, request, redirect, flash, send_file
-from flask_mysqldb import MySQL
+import pymysql
 import openpyxl
 from io import BytesIO
 
@@ -8,20 +8,22 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Necessário para usar flash
 
 # Configuração do banco de dados
-app.config['MYSQL_HOST'] = 'up-de-fra1-mysql-1.db.run-on-seenode.com'  # Host do Seenode
-app.config['MYSQL_PORT'] = 11550  # Porta do Seenode
-app.config['MYSQL_USER'] = 'db_0x42k76tgmx8'  # Usuário do banco de dados no Seenode
-app.config['MYSQL_PASSWORD'] = '8ax18qtDiYHLcQbOdXTftAIo'  # Substitua pela sua senha real
-app.config['MYSQL_DB'] = 'db_0x42k76tgmx8'  # Nome do banco de dados no Seenode
+app.config['MYSQL_HOST'] = 'up-de-fra1-mysql-1.db.run-on-seenode.com'
+app.config['MYSQL_PORT'] = 11550
+app.config['MYSQL_USER'] = 'db_0x42k76tgmx8'
+app.config['MYSQL_PASSWORD'] = '8ax18qtDiYHLcQbOdXTftAIo'
+app.config['MYSQL_DB'] = 'db_0x42k76tgmx8'
 
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
-app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 3306))
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'MapeamentoCultural')
-
-
-mysql = MySQL(app)
+# Função de conexão com o banco de dados usando PyMySQL
+def get_db_connection():
+    connection = pymysql.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB'],
+        port=app.config['MYSQL_PORT']
+    )
+    return connection
 
 @app.route('/')
 def index():
@@ -34,8 +36,11 @@ def submit_data():
     municipio = request.form['municipio']
     manifestacao = request.form['manifestacao']
 
+    # Conectar ao banco de dados
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
     # Inserir dados no banco de dados
-    cursor = mysql.connection.cursor()
     cursor.execute("""
         INSERT INTO Usuarios (nome, email, municipio) VALUES (%s, %s, %s)
     """, (nome, email, municipio))
@@ -126,29 +131,30 @@ def submit_data():
             VALUES (%s, %s, %s, %s, %s, %s)
         """, (resposta_id, nome_evento, 'Evento Cultural', data_inicio_evento, data_fim_evento, local_evento))
 
-    # Confirmar transação e fechar o cursor
-    mysql.connection.commit()
+    # Confirmar transação e fechar a conexão
+    connection.commit()
     cursor.close()
+    connection.close()
 
     flash('Informações enviadas com sucesso!', 'success')
-
     return redirect('/')
 
 @app.route('/test-connection')
 def test_connection():
     try:
-        cursor = mysql.connection.cursor()
+        connection = get_db_connection()
+        cursor = connection.cursor()
         cursor.execute("SELECT DATABASE();")
         db_name = cursor.fetchone()
         return f"Conectado ao banco de dados: {db_name[0]}"
     except Exception as e:
         return f"Erro ao conectar: {e}"
 
-
 @app.route('/relatorios')
 def relatorios():
     # Consultar dados para relatórios
-    cursor = mysql.connection.cursor()
+    connection = get_db_connection()
+    cursor = connection.cursor()
     cursor.execute("""
         SELECT Usuarios.nome, Usuarios.email, Usuarios.municipio, Respostas.manifestacao,
                Musica.nome_artista, Musica.genero, Musica.local_apresentacao, Musica.sobre,
@@ -172,13 +178,15 @@ def relatorios():
     """)
     dados = cursor.fetchall()
     cursor.close()
+    connection.close()
 
     return render_template('relatorios.html', dados=dados)
 
 @app.route('/relatorios/download')
 def download_relatorio():
     # Consultar dados para o relatório completo
-    cursor = mysql.connection.cursor()
+    connection = get_db_connection()
+    cursor = connection.cursor()
     cursor.execute("""
         SELECT Usuarios.nome, Usuarios.email, Usuarios.municipio, Respostas.manifestacao,
                Musica.nome_artista, Musica.genero, Musica.local_apresentacao, Musica.sobre,
@@ -202,6 +210,7 @@ def download_relatorio():
     """)
     dados = cursor.fetchall()
     cursor.close()
+    connection.close()
 
     # Gerar o Excel
     wb = openpyxl.Workbook()
@@ -228,5 +237,4 @@ def download_relatorio():
     return send_file(output, as_attachment=True, download_name="relatorio_cultural.xlsx", mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)  # Garanta que escute em 0.0.0.0 e na porta 80
-
+    app.run(host='0.0.0.0', port=80, debug=True)
